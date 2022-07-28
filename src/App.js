@@ -11,7 +11,7 @@ function App() {
   const [isLoading, error, auth] = useInit({
     appId: APP_ID,
     websocketURI: "wss://instant-server.herokuapp.com/api",
-    apiURI: "https://instant-server.herokuapp.com/api"
+    apiURI: "https://instant-server.herokuapp.com/api",
   });
   if (isLoading) {
     return <div>...</div>;
@@ -52,8 +52,7 @@ function Main() {
                 setPunText("");
                 setState("rating");
               }
-            }}
-          >
+            }}>
             Submit
           </button>
         </>
@@ -74,7 +73,17 @@ function Main() {
         <>
           <div>
             {data.puns.map((d) => (
-              <p key={d.id}>{d.text}</p>
+              <p key={d.id}>
+                {d.text} |{" "}
+                <button
+                  onClick={() => {
+                    const confirmed = confirm("Are you sure?");
+                    if (!confirmed) return;
+                    transact(tx.puns[d.id].delete());
+                  }}>
+                  Delete
+                </button>
+              </p>
             ))}
             <div style={{ marginTop: 20 }}>
               <button onClick={() => setState("submission")}>
